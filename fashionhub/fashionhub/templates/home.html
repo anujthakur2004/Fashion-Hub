@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Fashion Hub | Home</title>
+{% endblock title %}
+
+{% block content %}
+<!-- Hero Section (no image) -->
+<section class="hero-section text-center text-white d-flex align-items-center justify-content-center"
+         style="background: linear-gradient(135deg, #000000, #343a40); height: 80vh;">
+  <div>
+    <h1 class="display-4 fw-bold">Welcome to Fashion Hub</h1>
+    <p class="lead">Your one-stop destination for the latest fashion trends</p>
+    <a href="#" class="btn btn-light btn-lg mt-3">Shop Now</a>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Featured Products</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/jacket1.jpg' %}" class="card-img-top" alt="Product">
+        <div class="card-body text-center">
+          <h5 class="card-title">Stylish Leather Jacket</h5>
+          <p class="card-text">Classic brown leather jacket for men.</p>
+          <p class="fw-bold">₹1,799</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/denim1.jpg' %}" class="card-img-top" alt="Product">
+        <div class="card-body text-center">
+          <h5 class="card-title">Stylish Denim Jacket</h5>
+          <p class="card-text">Classic denim jacket for men.</p>
+          <p class="fw-bold">₹1,399</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/hzip1.jpg' %}" class="card-img-top" alt="Product">
+        <div class="card-body text-center">
+          <h5 class="card-title">Half Zipper</h5>
+          <p class="card-text">Half zipper jacket for men.</p>
+          <p class="fw-bold">₹1,099</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- New Arrivals -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">New Arrivals</h2>
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/shirt1.jpg' %}" class="card-img-top" alt="New Arrival">
+        <div class="card-body text-center">
+          <h5 class="card-title">Check Shirt</h5>
+          <p class="card-text">New design for men.</p>
+          <p class="fw-bold">₹799</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/jacket2.jpg' %}" class="card-img-top" alt="New Arrival">
+        <div class="card-body text-center">
+          <h5 class="card-title">Jacket</h5>
+          <p class="card-text">Perfect for your winter wardrobe.</p>
+          <p class="fw-bold">₹1,199</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/trouser1.jpg' %}" class="card-img-top" alt="New Arrival">
+        <div class="card-body text-center">
+          <h5 class="card-title">Trousers</h5>
+          <p class="card-text">Cotton lightweight stuff.</p>
+          <p class="fw-bold">₹899</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/hoodie1.jpg' %}" class="card-img-top" alt="New Arrival">
+        <div class="card-body text-center">
+          <h5 class="card-title">Hoodie</h5>
+          <p class="card-text">Available in different colours.</p>
+          <p class="fw-bold">₹999</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Accessories -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Accessories</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/adi1.jpg' %}" class="card-img-top" alt="Accessory">
+        <div class="card-body text-center">
+          <h5 class="card-title">Adidas Cap</h5>
+          <p class="card-text">Cap perfect for your fit.</p>
+          <p class="fw-bold">₹499</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/ny.jpg' %}" class="card-img-top" alt="Accessory">
+        <div class="card-body text-center">
+          <h5 class="card-title">NY Cap</h5>
+          <p class="card-text">Cap for the look.</p>
+          <p class="fw-bold">₹599</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{% static 'images/cap1.jpg' %}" class="card-img-top" alt="Accessory">
+        <div class="card-body text-center">
+          <h5 class="card-title">Nike Cap</h5>
+          <p class="card-text">Cap for your daily style.</p>
+          <p class="fw-bold">₹499</p>
+        </div>
+      </div>
+    </div>  
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="mb-4">Why Shop With Us?</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <i class="bi bi-truck display-5 mb-3"></i>
+        <h5>Fast & Free Delivery</h5>
+        <p>Get your orders delivered quickly with no hidden charges.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="bi bi-shield-check display-5 mb-3"></i>
+        <h5>Secure Payments</h5>
+        <p>All transactions are powered by Razorpay and encrypted end-to-end.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="bi bi-stars display-5 mb-3"></i>
+        <h5>Top Rated Quality</h5>
+        <p>Curated products that meet our high fashion and quality standards.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
