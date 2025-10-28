@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from . import views
 from django.urls import path, include
+from user import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,6 +25,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home', views.home, name='home'),
 
+    # Direct routes for register and profile
+    path('register', user_views.register, name='register'),
+    path('profile', user_views.profile, name='profile'),
+
+    path('clothes/', include('clothes.urls')),
     path('user/', include('user.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
     ]

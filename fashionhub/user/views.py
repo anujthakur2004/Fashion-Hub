@@ -4,7 +4,11 @@ from .models import User, Address
 from django.core.exceptions import ValidationError
 import re
 
+def is_logged_in(request):
+    return bool(request.session.get('user_id'))
+
 def register(request):
+    logged_in = is_logged_in(request)
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -16,26 +20,26 @@ def register(request):
         # Basic validation
         if password != confirmpassword:
             messages.error(request, 'Passwords do not match')
-            return render(request, 'register.html', {'error': 'Passwords do not match'})
+            return render(request, 'register.html', {'error': 'Passwords do not match', 'is_logged_in': logged_in})
         
         # Validate password strength
         if len(password) < 8:
             messages.error(request, 'Password must be at least 8 characters long')
-            return render(request, 'register.html', {'error': 'Password must be at least 8 characters long'})
+            return render(request, 'register.html', {'error': 'Password must be at least 8 characters long', 'is_logged_in': logged_in})
         
         # Validate phone number
         if not re.match(r'^\d{10}$', phone):
             messages.error(request, 'Please enter a valid 10-digit phone number')
-            return render(request, 'register.html', {'error': 'Please enter a valid 10-digit phone number'})
+            return render(request, 'register.html', {'error': 'Please enter a valid 10-digit phone number', 'is_logged_in': logged_in})
 
         # Check if username or email already exists
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists')
-            return render(request, 'register.html', {'error': 'Username already exists'})
+            return render(request, 'register.html', {'error': 'Username already exists', 'is_logged_in': logged_in})
         
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already exists')
-            return render(request, 'register.html', {'error': 'Email already exists'})
+            return render(request, 'register.html', {'error': 'Email already exists', 'is_logged_in': logged_in})
 
         try:
             # Create new user using your custom User model
@@ -50,9 +54,9 @@ def register(request):
             return redirect('login')
         except Exception as e:
             messages.error(request, f'An error occurred: {str(e)}')
-            return render(request, 'register.html', {'error': str(e)})
+            return render(request, 'register.html', {'error': str(e), 'is_logged_in': logged_in})
     
-    return render(request, 'register.html')
+    return render(request, 'register.html', {'is_logged_in': logged_in})
 
 def login(request):
     if request.method == 'POST':
