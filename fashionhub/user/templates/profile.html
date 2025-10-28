@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Profile | Fashion Hub
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-4">
+
+          <!-- Profile Header -->
+          <div class="d-flex align-items-center border-bottom pb-3 mb-4">
+            <div class="position-relative me-3" style="width:160px; height:160px;">
+              {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" 
+                     alt="Profile Picture"
+                     class="rounded-circle border border-2"
+                     style="width:160px; height:160px; object-fit:cover; display:block;" />
+              {% else %}
+                <img src="{% static 'images/default-profile.jpg' %}" 
+                     alt="Profile Picture"
+                     class="rounded-circle border border-2"
+                     style="width:160px; height:160px; object-fit:cover; display:block;" />
+              {% endif %}
+
+              <!-- Upload form (hidden file input). Submits to same profile URL -->
+              <form id="profile-pic-form" method="post" enctype="multipart/form-data" action="{% url 'profile' %}" class="position-absolute" style="bottom:0; right:0;">
+                {% csrf_token %}
+                <input id="profilePictureInput" type="file" name="profile_picture" accept="image/*" style="display:none;" />
+                <button type="button" class="btn btn-sm btn-outline-primary" id="changePicBtn" style="position: absolute; bottom: -10px; right: -10px; border-radius:50%;">
+                  <i class="bi bi-camera-fill"></i>
+                </button>
+              </form>
+            </div>
+            <div class="ms-3">
+              <h4 class="fw-bold mb-0 text-capitalize">{{ user.username }}</h4>
+              <small class="text-muted">{{ user.email }}</small>
+            </div>
+            <div class="ms-auto">
+              <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm rounded-pill">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+              </a>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <ul class="nav nav-pills mb-4 justify-content-center" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="account-tab" data-bs-toggle="tab"
+                      data-bs-target="#account" type="button" role="tab">
+                <i class="bi bi-person-lines-fill me-1"></i> Account Info
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="address-tab" data-bs-toggle="tab"
+                      data-bs-target="#address" type="button" role="tab">
+                <i class="bi bi-geo-alt-fill me-1"></i> Address
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="password-tab" data-bs-toggle="tab"
+                      data-bs-target="#password" type="button" role="tab">
+                <i class="bi bi-lock-fill me-1"></i> Change Password
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="profileTabsContent">
+
+          <script>
+            // Wire the change picture button to open file picker and auto-submit
+            document.addEventListener('DOMContentLoaded', function(){
+              const btn = document.getElementById('changePicBtn');
+              const fileInput = document.getElementById('profilePictureInput');
+              const form = document.getElementById('profile-pic-form');
+              if(btn && fileInput && form){
+                btn.addEventListener('click', () => fileInput.click());
+                fileInput.addEventListener('change', () => {
+                  if(fileInput.files.length) form.submit();
+                });
+              }
+            });
+            
+            // Toggle address edit forms
+            function toggleEdit(id){
+              const el = document.getElementById('edit-form-' + id);
+              if(!el) return;
+              el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
+            }
+          </script>
+
+            <!-- Account Info -->
+            <div class="tab-pane fade show active" id="account" role="tabpanel">
+              <form method="post" action="{% url 'update_profile' %}">
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Full Name</label>
+                    <input type="text" name="name" class="form-control rounded-3" value="{{ user.username }}">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input type="email" name="email" class="form-control rounded-3" value="{{ user.email }}">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Phone</label>
+                    <input type="tel" name="phone" class="form-control rounded-3" placeholder="+91 9876543210" value="{{ user.phone|default_if_none:'' }}">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Gender</label>
+                    <select class="form-select rounded-3 form-control" name="gender">
+                      <option value="" {% if not user.gender %}selected{% endif %}>Select</option>
+                      <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
+                      <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
+                      <option value="other" {% if user.gender == 'other' %}selected{% endif %}>Other</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="text-end mt-4">
+                  <button type="submit" class="btn btn-primary px-4 rounded-pill">Save Changes</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Address -->
+            <div class="tab-pane fade" id="address" role="tabpanel">
+              <!-- Existing addresses list -->
+              <div class="mb-4">
+                {% if addresses %}
+                  {% for addr in addresses %}
+                    <div class="card mb-3 p-3">
+                      <div class="d-flex align-items-start">
+                        <div class="flex-grow-1">
+                          <strong>{{ addr.address1 }}</strong>
+                          {% if addr.address2 %}<div>{{ addr.address2 }}</div>{% endif %}
+                          <div>{{ addr.city }}{% if addr.city and addr.state %}, {% endif %}{{ addr.state }} - {{ addr.pincode }}</div>
+                        </div>
+                        <div class="ms-3 text-end">
+                          <button class="btn btn-sm btn-outline-primary" type="button" onclick="toggleEdit({{ addr.id }})">Edit</button>
+                          <form method="post" action="{% url 'address_delete' addr.id %}" style="display:inline-block">{% csrf_token %}<button class="btn btn-sm btn-outline-danger">Delete</button></form>
+                        </div>
+                      </div>
+
+                      <div id="edit-form-{{ addr.id }}" style="display:none; margin-top:12px;">
+                        <form method="post" action="{% url 'address_edit' addr.id %}">
+                          {% csrf_token %}
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <input type="text" name="address1" class="form-control rounded-3" value="{{ addr.address1 }}" placeholder="House No, Street">
+                            </div>
+                            <div class="col-md-6">
+                              <input type="text" name="address2" class="form-control rounded-3" value="{{ addr.address2 }}" placeholder="Area, Landmark">
+                            </div>
+                            <div class="col-md-4">
+                              <input type="text" name="city" class="form-control rounded-3" value="{{ addr.city }}" placeholder="City">
+                            </div>
+                            <div class="col-md-4">
+                              <input type="text" name="state" class="form-control rounded-3" value="{{ addr.state }}" placeholder="State">
+                            </div>
+                            <div class="col-md-4">
+                              <input type="text" name="pincode" class="form-control rounded-3" value="{{ addr.pincode }}" placeholder="Pincode">
+                            </div>
+                          </div>
+                          <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="toggleEdit({{ addr.id }})">Cancel</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="text-muted">No addresses yet. Add one below.</p>
+                {% endif %}
+              </div>
+
+              <!-- Add address form -->
+              <div class="card p-3">
+                <h6 class="mb-3">Add New Address</h6>
+                <form method="post" action="{% url 'address_add' %}">
+                  {% csrf_token %}
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <input type="text" name="address1" class="form-control rounded-3" placeholder="House No, Street">
+                    </div>
+                    <div class="col-md-6">
+                      <input type="text" name="address2" class="form-control rounded-3" placeholder="Area, Landmark">
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" name="city" class="form-control rounded-3" placeholder="City">
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" name="state" class="form-control rounded-3" placeholder="State">
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" name="pincode" class="form-control rounded-3" maxlength="6" placeholder="Pincode">
+                    </div>
+                  </div>
+                  <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-success px-4 rounded-pill">Add Address</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Change Password -->
+            <div class="tab-pane fade" id="password" role="tabpanel">
+              <form method="post" action="{% url 'change_password' %}">
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-md-12">
+                    <label class="form-label fw-semibold">Current Password</label>
+                    <input type="password" name="old_password" class="form-control rounded-3" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">New Password</label>
+                    <input type="password" name="new_password1" class="form-control rounded-3" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Confirm New Password</label>
+                    <input type="password" name="new_password2" class="form-control rounded-3" required>
+                  </div>
+                </div>
+                <div class="text-end mt-4">
+                  <button type="submit" class="btn btn-warning px-4 rounded-pill">Update Password</button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
