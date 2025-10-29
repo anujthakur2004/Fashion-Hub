@@ -16,128 +16,97 @@
   </div>
 </section>
 
-<!-- Featured Products -->
+
+
+<!-- Featured Products (Dynamic, 3 only) -->
 <section class="container my-5">
   <h2 class="text-center mb-4">Featured Products</h2>
   <div class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/jacket1.jpg' %}" class="card-img-top" alt="Product">
-        <div class="card-body text-center">
-          <h5 class="card-title">Stylish Leather Jacket</h5>
-          <p class="card-text">Classic brown leather jacket for men.</p>
-          <p class="fw-bold">₹1,799</p>
+    {% for product in featured_products %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          {% with product.images.first as img %}
+            {% if img %}
+              <img src="{{ img.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}">
+            {% else %}
+              <img src="{% static 'images/product-placeholder.png' %}" class="card-img-top object-fit-cover" alt="No image">
+            {% endif %}
+          {% endwith %}
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description|truncatewords:10 }}</p>
+            <p class="fw-bold">₹{{ product.price }}</p>
+            <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-dark btn-sm mt-2">View</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/denim1.jpg' %}" class="card-img-top" alt="Product">
-        <div class="card-body text-center">
-          <h5 class="card-title">Stylish Denim Jacket</h5>
-          <p class="card-text">Classic denim jacket for men.</p>
-          <p class="fw-bold">₹1,399</p>
-        </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info">No products found.</div>
       </div>
-    </div>
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/hzip1.jpg' %}" class="card-img-top" alt="Product">
-        <div class="card-body text-center">
-          <h5 class="card-title">Half Zipper</h5>
-          <p class="card-text">Half zipper jacket for men.</p>
-          <p class="fw-bold">₹1,099</p>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 
-<!-- New Arrivals -->
+
+<!-- New Arrivals (Dynamic, 4 only) -->
 <section class="container my-5">
   <h2 class="text-center mb-4">New Arrivals</h2>
   <div class="row row-cols-1 row-cols-md-4 g-4">
-    
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/shirt1.jpg' %}" class="card-img-top" alt="New Arrival">
-        <div class="card-body text-center">
-          <h5 class="card-title">Check Shirt</h5>
-          <p class="card-text">New design for men.</p>
-          <p class="fw-bold">₹799</p>
+    {% for product in new_arrivals %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          {% with product.images.first as img %}
+            {% if img %}
+              <img src="{{ img.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}">
+            {% else %}
+              <img src="{% static 'images/product-placeholder.png' %}" class="card-img-top object-fit-cover" alt="No image">
+            {% endif %}
+          {% endwith %}
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description|truncatewords:10 }}</p>
+            <p class="fw-bold">₹{{ product.price }}</p>
+            <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-dark btn-sm mt-2">View</a>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/jacket2.jpg' %}" class="card-img-top" alt="New Arrival">
-        <div class="card-body text-center">
-          <h5 class="card-title">Jacket</h5>
-          <p class="card-text">Perfect for your winter wardrobe.</p>
-          <p class="fw-bold">₹1,199</p>
-        </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info">No products found.</div>
       </div>
-    </div>
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/trouser1.jpg' %}" class="card-img-top" alt="New Arrival">
-        <div class="card-body text-center">
-          <h5 class="card-title">Trousers</h5>
-          <p class="card-text">Cotton lightweight stuff.</p>
-          <p class="fw-bold">₹899</p>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/hoodie1.jpg' %}" class="card-img-top" alt="New Arrival">
-        <div class="card-body text-center">
-          <h5 class="card-title">Hoodie</h5>
-          <p class="card-text">Available in different colours.</p>
-          <p class="fw-bold">₹999</p>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 
-<!-- Accessories -->
+
+<!-- Accessories (Dynamic, 3 only) -->
 <section class="container my-5">
   <h2 class="text-center mb-4">Accessories</h2>
   <div class="row row-cols-1 row-cols-md-3 g-4">
-
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/adi1.jpg' %}" class="card-img-top" alt="Accessory">
-        <div class="card-body text-center">
-          <h5 class="card-title">Adidas Cap</h5>
-          <p class="card-text">Cap perfect for your fit.</p>
-          <p class="fw-bold">₹499</p>
+    {% for product in accessories %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          {% with product.images.first as img %}
+            {% if img %}
+              <img src="{{ img.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}">
+            {% else %}
+              <img src="{% static 'images/product-placeholder.png' %}" class="card-img-top object-fit-cover" alt="No image">
+            {% endif %}
+          {% endwith %}
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description|truncatewords:10 }}</p>
+            <p class="fw-bold">₹{{ product.price }}</p>
+            <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-dark btn-sm mt-2">View</a>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/ny.jpg' %}" class="card-img-top" alt="Accessory">
-        <div class="card-body text-center">
-          <h5 class="card-title">NY Cap</h5>
-          <p class="card-text">Cap for the look.</p>
-          <p class="fw-bold">₹599</p>
-        </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info">No products found.</div>
       </div>
-    </div>
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        <img src="{% static 'images/cap1.jpg' %}" class="card-img-top" alt="Accessory">
-        <div class="card-body text-center">
-          <h5 class="card-title">Nike Cap</h5>
-          <p class="card-text">Cap for your daily style.</p>
-          <p class="fw-bold">₹499</p>
-        </div>
-      </div>
-    </div>  
+    {% endfor %}
   </div>
 </section>
 

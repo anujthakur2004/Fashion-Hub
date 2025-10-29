@@ -30,6 +30,8 @@ class Product(models.Model):
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # Available sizes for the product (e.g., M, L, XL, XXL)
+    sizes = models.ManyToManyField('Size', blank=True, related_name='products')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -48,3 +50,14 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
+
+
+# Size model to represent available sizes for products
+class Size(models.Model):
+    name = models.CharField(max_length=10, unique=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name

@@ -72,22 +72,51 @@ Register | Fashion Hub
             </div>
           </div>
 
+          <!-- ✅ Terms checkbox -->
           <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
             <label class="form-check-label" for="terms">
-              I agree to the <a href="#">Terms and Conditions</a>
+              I agree to the 
+              <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a>
             </label>
           </div>
 
-          <button type="submit" class="btn btn-register">Register</button>
+          <button type="submit" class="btn btn-register w-100">Register</button>
+
           <div class="mt-3 text-center">
             Already have an account?
             <a href="{% url 'login' %}" class="text-primary fw-semibold text-decoration-none">
               Login here
             </a>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- ✅ Moved modal outside the form to prevent flicker -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li>All sales are final and subject to product availability.</li>
+          <li>Returns accepted within 7 days of delivery.</li>
+          <li>Product images may vary due to lighting conditions.</li>
+          <li>Ensure your shipping details are correct before placing an order.</li>
+          <li>For support, email <strong>support@fashionhub.com</strong>.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}

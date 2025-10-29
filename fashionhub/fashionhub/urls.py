@@ -28,9 +28,10 @@ urlpatterns = [
     # Direct routes for register and profile
     path('register', user_views.register, name='register'),
     path('profile', user_views.profile, name='profile'),
-
+    path('contact', views.contact, name='contact'),
     path('clothes/', include('clothes.urls')),
     path('user/', include('user.urls')),
+    path('order/', include('order.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
     ]
 

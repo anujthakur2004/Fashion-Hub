@@ -51,15 +51,8 @@
                 <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-dark btn-sm flex-grow-1">
                   View
                 </a>
-{% comment %} 
-                {# Add to cart link (disabled until cart is implemented)
-                <form method="post" action="{% url 'cart_add' product.id %}" class="d-inline">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-dark btn-sm" {% if product.stock == 0 %}disabled{% endif %}>
-                    Add to cart
-                  </button>
-                </form>
-                #} {% endcomment %}
+
+          
               </div>
             </div>
           </div>

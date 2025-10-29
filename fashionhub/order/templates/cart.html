@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Shopping Cart | Fashion Hub</title>
+{% endblock title %}
+
+{% block content %}
+<style>
+  .cart-table {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  }
+  .cart-table th {
+    background: #f8f9fa;
+  }
+  .cart-item-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  select.form-select, input.form-control {
+    border-radius: 8px;
+    font-size: 0.9rem;
+    padding: 0.35rem 0.6rem;
+  }
+  .btn-remove {
+    border-radius: 8px;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+  }
+  .grand-total-box {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 1rem 1.5rem;
+  }
+</style>
+
+<div class="container my-5">
+  <h2 class="mb-4">🛒 Your Shopping Cart</h2>
+
+  {% if cart_items %}
+    <div class="table-responsive">
+      <table class="table align-middle cart-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Size</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                {% if item.product.images.first %}
+                  <img src="{{ item.product.images.first.image.url }}" class="cart-item-img me-3" alt="{{ item.product.name }}">
+                {% endif %}
+                <div>
+                  <strong>{{ item.product.name }}</strong><br>
+                  <small class="text-muted">{{ item.product.category.name }}</small>
+                </div>
+              </div>
+            </td>
+            <td>₹{{ item.product.price }}</td>
+            <td>
+              <form method="post" action="{% url 'cart_add' item.product.id %}" class="d-flex align-items-center gap-1">
+                {% csrf_token %}
+                <input type="hidden" name="size" value="{{ item.size }}">
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm" style="width:70px;" onchange="this.form.submit()">
+              </form>
+            </td>
+            <td>
+              <form method="post" action="{% url 'cart_update_size' item.product.id %}">
+                {% csrf_token %}
+                <select name="size" class="form-select form-select-sm" style="width:120px;" onchange="this.form.submit()">
+                  {% for s in item.product.sizes.all %}
+                    <option value="{{ s.name }}" {% if s.name == item.size %}selected{% endif %}>{{ s.name }}</option>
+                  {% endfor %}
+                </select>
+              </form>
+            </td>
+            <td>₹{{ item.total_price }}</td>
+            <td>
+              <form method="post" action="{% url 'cart_remove' item.product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="size" value="{{ item.size }}">
+                <button type="submit" class="btn btn-danger btn-sm btn-remove">
+                  <i class="bi bi-trash"></i> Remove
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <tfoot>
+  <tr>
+    <td colspan="4" class="text-end"><strong>Grand Total:</strong></td>
+    <td><strong>₹{{ grand_total }}</strong></td>
+    <td>
+      <a href="{% url 'checkout' %}" class="btn btn-success btn-sm w-100">Proceed to Checkout</a>
+    </td>
+  </tr>
+</tfoot>
+
+
+   {% else %}
+    <p>Your cart is empty. <a href="{% url 'home' %}" class="fw-semibold text-decoration-none">Continue shopping</a>.</p>
+  {% endif %}
+</div>
+{% endblock content %}

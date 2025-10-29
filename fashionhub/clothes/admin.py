@@ -9,9 +9,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price', 'stock', 'is_available')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductImageInline]
+    filter_horizontal = ('sizes',)
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+from .models import Size
+admin.site.register(Size)

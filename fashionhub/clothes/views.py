@@ -25,8 +25,16 @@ def men(request):
     return render(request, 'men.html', {'page_obj': page_obj})
 
 def women(request):
-    return render(request, 'women.html')
+    qs = Product.objects.filter(is_available=True, category__name__iexact='Men').select_related('category').prefetch_related('images').order_by('-created_at')
+    paginator = Paginator(qs, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'women.html', {'page_obj': page_obj})
 
 def accessories(request):
-    return render(request, 'accessories.html')
+    qs = Product.objects.filter(is_available=True, category__name__iexact='Men').select_related('category').prefetch_related('images').order_by('-created_at')
+    paginator = Paginator(qs, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'accessories.html', {'page_obj': page_obj})
 

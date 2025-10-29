@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Contact Us | Fashion Hub</title>
+{% endblock title %}
+
+{% block content %}
+
+<div class="container my-5">
+  <h2 class="mb-4">Contact Us</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <form method="post" action="{% url 'contact' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <h4 class="mb-3">Our Contact Information</h4>
+      <p><i class="bi bi-geo-alt-fill me-2"></i>123 Fashion St, Style City, Country</p>
+      <p><i class="bi bi-telephone-fill me-2"></i>+1 234 567 890</p>
+      <p><i class="bi bi-envelope-fill me-2">support@fashionhub.com</i>
+      <p><i class="bi bi-clock-fill me-2"></i>Mon - Fri: 9:00 AM - 6:00 PM</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
