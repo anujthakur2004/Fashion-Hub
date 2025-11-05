@@ -1,7 +1,8 @@
 from django.contrib import admin
-
+from django.contrib.auth.models import  Group
 from .models import Order, OrderItem
 
+admin.site.unregister(Group)
 
 class OrderItemInline(admin.TabularInline):
 	model = OrderItem
