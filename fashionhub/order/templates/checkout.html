@@ -1,0 +1,381 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Checkout | Fashion Hub</title>
+{% endblock title %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #f6f6f6;
+  }
+
+  .checkout-wrapper {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    padding: 2rem 2.5rem;
+  }
+
+  h2.checkout-title {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .edit-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .edit-link:hover {
+    text-decoration: underline;
+  }
+
+  .info-display {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .info-display i {
+    color: #6c757d;
+    margin-right: 0.8rem;
+    font-size: 1.1rem;
+  }
+
+  .info-text {
+    color: #495057;
+    margin: 0;
+  }
+
+  .form-label {
+    font-weight: 600;
+  }
+
+  .order-summary {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 20px;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .summary-item:last-of-type {
+    border-bottom: none;
+  }
+
+  .item-details {
+    flex: 1;
+  }
+
+  .item-name {
+    font-weight: 500;
+    color: #212529;
+    margin-bottom: 0.2rem;
+  }
+
+  .item-meta {
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+
+  .item-price {
+    font-weight: 600;
+    color: #212529;
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 2px solid #dee2e6;
+  }
+
+  .summary-total strong {
+    font-size: 1.2rem;
+  }
+
+  .btn-proceed {
+    width: 100%;
+    padding: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #007bff, #6610f2);
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 1rem;
+  }
+
+  .btn-proceed:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,123,255,0.25);
+  }
+
+  .address-box {
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    cursor: pointer;
+  }
+
+  .address-box:hover {
+    border-color: #007bff;
+    background: #f9fbff;
+  }
+
+  .address-box.selected {
+    border-color: #007bff;
+    background: #e7f3ff;
+  }
+
+  .form-check-input:checked + .form-check-label {
+    color: #007bff;
+  }
+
+  .add-address-btn {
+    color: #007bff;
+    border: 2px dashed #007bff;
+    padding: 0.8rem;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: block;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .add-address-btn:hover {
+    background: #e7f3ff;
+  }
+
+  .empty-cart-notice {
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+
+  .empty-cart-notice i {
+    font-size: 4rem;
+    color: #dee2e6;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="checkout-wrapper">
+    {% if cart_items %}
+    <div class="row">
+      <!-- LEFT COLUMN -->
+      <div class="col-lg-7">
+        <h2 class="checkout-title">
+          <i class="bi bi-bag-check-fill me-2"></i>Checkout
+        </h2>
+
+        <!-- Contact Information -->
+        <div class="section-card">
+          <div class="section-header">
+            <h3 class="section-title">
+              <i class="bi bi-person-circle me-2"></i>Contact Information
+            </h3>
+            <a href="{% url 'profile' %}" class="edit-link">
+              <i class="bi bi-pencil-square me-1"></i>Edit
+            </a>
+          </div>
+          <div class="info-display">
+            <i class="bi bi-person-fill"></i>
+            <p class="info-text">
+              <strong>Name:</strong> 
+              {% if request.user.first_name or request.user.last_name %}
+                {{ request.user.first_name }} {{ request.user.last_name }}
+              {% else %}
+                {{ request.user.username }}
+              {% endif %}
+            </p>
+          </div>
+          <div class="info-display">
+            <i class="bi bi-telephone-fill"></i>
+            <p class="info-text">
+              <strong>Phone:</strong> 
+              {% if request.user.phone %}
+                {{ request.user.phone }}
+              {% else %}
+                <span class="text-muted">Not provided</span>
+                <a href="{% url 'profile' %}" class="ms-2 edit-link">Add phone number</a>
+              {% endif %}
+            </p>
+          </div>
+          <div class="info-display">
+            <i class="bi bi-envelope-fill"></i>
+            <p class="info-text">
+              <strong>Email:</strong> {{ request.user.email }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="section-card">
+          <div class="section-header">
+            <h3 class="section-title">
+              <i class="bi bi-geo-alt-fill me-2"></i>Shipping Address
+            </h3>
+          </div>
+
+          <form method="post" action="{% url 'payment' %}">
+            {% csrf_token %}
+
+            {% if addresses %}
+              <div class="mb-3">
+                {% for addr in addresses %}
+                  <div class="address-box {% if addr.is_primary %}selected{% endif %}">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="selected_address"
+                             id="addr{{ addr.id }}" value="{{ addr.id }}"
+                             {% if addr.is_primary %}checked{% endif %}>
+                      <label class="form-check-label w-100" for="addr{{ addr.id }}">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <strong class="d-block mb-1">{{ addr.address1 }}</strong>
+                            {% if addr.address2 %}
+                              <span class="d-block text-muted small">{{ addr.address2 }}</span>
+                            {% endif %}
+                            <span class="text-muted">
+                              {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}
+                            </span>
+                          </div>
+                          {% if addr.is_primary %}
+                            <span class="badge bg-primary" style="height: fit-content;">Primary</span>
+                          {% endif %}
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+              <a href="{% url 'profile' %}" class="add-address-btn">
+                <i class="bi bi-plus-circle me-2"></i>Add New Address
+              </a>
+            {% else %}
+              <div class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                No saved addresses found. Please add a delivery address to continue.
+              </div>
+              <a href="{% url 'profile' %}" class="btn btn-outline-primary w-100">
+                <i class="bi bi-plus-circle me-2"></i>Add Delivery Address
+              </a>
+            {% endif %}
+
+            <!-- Payment Method -->
+            {% if addresses %}
+            <div class="mt-4">
+              <h3 class="section-title mb-3">
+                <i class="bi bi-credit-card-fill me-2"></i>Payment Method
+              </h3>
+              <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+                <option value="" disabled selected>Choose payment method</option>
+                <option value="stripe">💳 Online Payment (Stripe)</option>
+                <option value="cod">💵 Cash on Delivery</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-proceed">
+              <i class="bi bi-lock-fill me-2"></i>Proceed to Payment
+            </button>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-lg-5">
+        <div class="order-summary">
+          <h4 class="mb-4">
+            <i class="bi bi-receipt me-2"></i>Order Summary
+          </h4>
+          
+          {% for item in cart_items %}
+          <div class="summary-item">
+            <div class="item-details">
+              <div class="item-name">{{ item.product.name }}</div>
+              <div class="item-meta">
+                Size: {{ item.size|upper }} | Qty: {{ item.quantity }}
+              </div>
+            </div>
+            <div class="item-price">₹{{ item.total_price }}</div>
+          </div>
+          {% endfor %}
+
+          <div class="summary-total">
+            <strong>Total Amount</strong>
+            <strong class="text-primary">₹{{ cart_total }}</strong>
+          </div>
+
+          <div class="mt-3 text-muted small">
+            <i class="bi bi-shield-check me-2"></i>
+            Your payment information is secure and encrypted
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-cart-notice">
+      <i class="bi bi-cart-x"></i>
+      <h3 class="mb-3">Your cart is empty</h3>
+      <p class="text-muted mb-4">Add some items to your cart before checking out.</p>
+      <a href="{% url 'home' %}" class="btn btn-primary">
+        <i class="bi bi-arrow-left me-2"></i>Continue Shopping
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  // Add selected class to address boxes when radio is checked
+  document.querySelectorAll('.address-box input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      document.querySelectorAll('.address-box').forEach(box => {
+        box.classList.remove('selected');
+      });
+      this.closest('.address-box').classList.add('selected');
+    });
+  });
+</script>
+{% endblock content %}

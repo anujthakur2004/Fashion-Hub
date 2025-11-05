@@ -71,7 +71,7 @@
             </td>
             <td>₹{{ item.product.price }}</td>
             <td>
-              <form method="post" action="{% url 'cart_add' item.product.id %}" class="d-flex align-items-center gap-1">
+              <form method="post" action="{% url 'cart_update' item.product.id %}" class="d-flex align-items-center gap-1">
                 {% csrf_token %}
                 <input type="hidden" name="size" value="{{ item.size }}">
                 <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm" style="width:70px;" onchange="this.form.submit()">
@@ -80,6 +80,7 @@
             <td>
               <form method="post" action="{% url 'cart_update_size' item.product.id %}">
                 {% csrf_token %}
+                <input type="hidden" name="old_size" value="{{ item.size }}">
                 <select name="size" class="form-select form-select-sm" style="width:120px;" onchange="this.form.submit()">
                   {% for s in item.product.sizes.all %}
                     <option value="{{ s.name }}" {% if s.name == item.size %}selected{% endif %}>{{ s.name }}</option>

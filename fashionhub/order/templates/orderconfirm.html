@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Order Confirmation | Fashion Hub</title>
+{% endblock title %}
+
+{% block content %}
+<style>
+	.confirm-wrapper { background: #fff; border-radius: 16px; box-shadow: 0 6px 24px rgba(0,0,0,0.08); padding: 2rem; }
+	.checkmark { width: 64px; height: 64px; border-radius: 50%; background: #e6f4ea; color: #22c55e; display: flex; align-items:center; justify-content:center; font-size: 32px; }
+	.order-id { font-weight: 700; }
+	.summary-card { background:#f8f9fa; border-radius:12px; padding:1.2rem; }
+	.summary-item { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0; border-bottom:1px solid #e9ecef; }
+	.summary-item:last-child { border-bottom:0; }
+	.product-img { width:60px; height:60px; object-fit:cover; border-radius:8px; margin-right:1rem; }
+	.item-info { display:flex; align-items:center; flex:1; }
+	.addr { background:#fff; border:1px solid #e9ecef; border-radius:12px; padding:1rem; }
+	.btn-primary { border-radius:10px; padding:0.75rem 1rem; }
+</style>
+
+<div class="container my-5">
+	<div class="confirm-wrapper">
+		<div class="d-flex align-items-center mb-3">
+			<div class="checkmark me-3"><i class="bi bi-check-lg"></i></div>
+			<div>
+				<h3 class="mb-1">Thank you! Your order is confirmed.</h3>
+						<div class="text-muted">
+							{% if order.db_id %}
+								Order #: <span class="order-id">{{ order.db_id }}</span>
+							{% elif order.order_id %}
+								Order ID: <span class="order-id">{{ order.order_id }}</span>
+							{% endif %}
+						</div>
+			</div>
+		</div>
+
+		<div class="row g-4">
+			<div class="col-lg-7">
+				<div class="summary-card mb-4">
+					<h5 class="mb-3">Order Summary</h5>
+				{% for item in order.items_enriched %}
+					<div class="summary-item">
+						<div class="item-info">
+							{% if item.product and item.product.images.first %}
+								<img src="{{ item.product.images.first.image.url }}" alt="{{ item.name }}" class="product-img">
+							{% else %}
+								<div class="product-img bg-light d-flex align-items-center justify-content-center">
+									<i class="bi bi-image text-muted"></i>
+								</div>
+							{% endif %}
+							<div>
+								<div class="fw-semibold">{{ item.name }}</div>
+								<div class="text-muted small">{% if item.size %}Size: {{ item.size|upper }} · {% endif %}Qty: {{ item.quantity }}</div>
+							</div>
+						</div>
+						<div class="fw-semibold">₹{{ item.total_price }}</div>
+					</div>
+				{% endfor %}
+					<div class="d-flex justify-content-between align-items-center pt-2 mt-1 border-top">
+						<strong>Total</strong>
+						<strong class="text-primary">₹{{ order.total }}</strong>
+					</div>
+				</div>
+
+				<a href="{% url 'home' %}" class="btn btn-primary"><i class="bi bi-bag me-2"></i>Continue Shopping</a>
+			</div>
+
+			<div class="col-lg-5">
+				<div class="addr">
+					<h6 class="mb-3"><i class="bi bi-geo-alt-fill me-2"></i>Delivery Address</h6>
+					{% if order.address %}
+						<div>{{ order.address.address1 }}</div>
+						{% if order.address.address2 %}<div>{{ order.address.address2 }}</div>{% endif %}
+						<div>{{ order.address.city }}, {{ order.address.state }} - {{ order.address.pincode }}</div>
+					{% else %}
+						<div class="text-muted">No address provided.</div>
+					{% endif %}
+				</div>
+						<div class="text-muted small mt-3">
+							<i class="bi bi-clock-history me-1"></i>Placed at:
+							{% if order.placed_at_dt %}
+								{{ order.placed_at_dt|date:"M d, Y h:i A" }}
+							{% elif order.placed_at %}
+								{{ order.placed_at }}
+							{% else %}
+								-
+							{% endif %}
+						</div>
+			</div>
+		</div>
+	</div>
+  
+</div>
+{% endblock content %}

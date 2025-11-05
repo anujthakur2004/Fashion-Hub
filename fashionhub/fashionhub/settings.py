@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'user.context_processors.is_logged_in',
+                'user.context_processors.cart_item_count',
             ],
         },
     },
@@ -104,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+AUTH_USER_MODEL = 'user.User'
 
 
 # Internationalization
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -134,3 +136,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# settings.py
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'   # optional, where to go after login
+
+# Stripe Configuration
+STRIPE_API_KEY = 'sk_test_51RAsFTGOlmzlPsd5l4AC2rCsCGifellA2tuqBFOfMCCJgOSu4aN8lAGijRsad8Z5VcxVjARSAKydqGs1l2TTSfOJ00GjsOlo3q'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51RAsFTGOlmzlPsd5CTHWgoHCQu5BqhzO21zOKGY5GYOFHeeLQZbcVeXCVdDTPeSHqHPcaZEYw3c3VgkQJZ9DzBCi00xPSCi0Sf'
