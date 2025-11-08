@@ -108,16 +108,16 @@ Supports multiple product images and size variants.
 📦 Cart & Order Models
 Session-based cart system.
 
-Razorpay-ready checkout process.
+STRIPE-ready checkout process.
 
 💳 Payment Integration
-The checkout process integrates with Razorpay, ensuring secure and fast payments.
-You can configure your Razorpay API keys in .env or settings.py:
+The checkout process integrates with STRIPE, ensuring secure and fast payments.
+You can configure your STRIPE API keys in .env or settings.py:
 
 python
 Copy code
-RAZORPAY_KEY_ID = "your_key_here"
-RAZORPAY_KEY_SECRET = "your_secret_here"
+STRIPE_KEY_ID = "your_key_here"
+STRIPE_KEY_SECRET = "your_secret_here"
 👨‍💻 Admin Panel
 Access the admin panel to:
 
