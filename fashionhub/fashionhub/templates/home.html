@@ -6,15 +6,43 @@
 {% endblock title %}
 
 {% block content %}
-<!-- Hero Section (no image) -->
-<section class="hero-section text-center text-white d-flex align-items-center justify-content-center"
-         style="background: linear-gradient(135deg, #000000, #343a40); height: 80vh;">
-  <div>
-    <h1 class="display-4 fw-bold">Welcome to Fashion Hub</h1>
-    <p class="lead">Your one-stop destination for the latest fashion trends</p>
-    <a href="{% url 'men' %}" class="btn btn-light btn-lg mt-3">Shop Now</a>
+<!-- Hero Section -->
+<section class="hero-section text-center text-white d-flex align-items-center justify-content-center position-relative"
+         style="height: 85vh; background: url('{% static "images/hero.png" %}') center/cover no-repeat;">
+
+  <!-- Dark Overlay -->
+  <div class="position-absolute top-0 start-0 w-100 h-100"
+       style="background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(1px);"></div>
+
+  <!-- Content -->
+  <div class="position-relative z-1 text-light">
+    <h1 class="display-3 fw-bold mb-3" style="letter-spacing: 1px;">
+      Welcome to Fashion Hub
+    </h1>
+    <p class="lead mb-4" style="font-size: 1.2rem;">
+      Your one-stop destination for the latest fashion trends
+    </p>
+    <a href="{% url 'men' %}" class="btn btn-outline-light btn-lg px-5 py-2 rounded-pill shadow-sm hover-scale">
+      Shop Now
+    </a>
   </div>
+
+  <!-- Gradient fade at bottom -->
+  <div class="position-absolute bottom-0 start-0 w-100"
+       style="height: 100px; background: linear-gradient(to top, #ddd, transparent);"></div>
 </section>
+
+
+<style>
+  .hover-scale {
+    transition: all 0.3s ease-in-out;
+  }
+  .hover-scale:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+  }
+</style>
+
 
 
 
