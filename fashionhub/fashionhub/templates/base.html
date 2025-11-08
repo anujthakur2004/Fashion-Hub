@@ -79,8 +79,8 @@
         <div class="d-flex align-items-center">
 
           <!-- Search bar -->
-          <form class="d-flex me-3" role="search">
-            <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
+          <form class="d-flex me-3" role="search" method="get" action="{% url 'search' %}">
+            <input class="form-control form-control-sm me-2" type="search" name="q" placeholder="Search products..." aria-label="Search" value="{{ query|default:'' }}">
             <button class="btn btn-outline-success btn-sm" type="submit"><i class="bi bi-search"></i></button>
           </form>
 
