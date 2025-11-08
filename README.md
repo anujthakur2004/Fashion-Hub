@@ -28,7 +28,7 @@ It allows users to browse fashion items, view detailed product pages, manage the
 | **Frontend** | HTML, CSS (Bootstrap 5), JavaScript |
 | **Backend** | Django 5+ (Python Framework) |
 | **Database** | SQLite3 (default) |
-| **Payment Gateway** | Razorpay Integration |
+| **Payment Gateway** | Stripe Integration |
 | **Authentication** | Django session-based custom user model |
 | **Media Handling** | Django Media Uploads (Profile pictures, Product images) |
 
